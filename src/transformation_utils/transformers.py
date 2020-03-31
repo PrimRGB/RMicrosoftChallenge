@@ -9,7 +9,7 @@ class versionTransformer(BaseEstimator, TransformerMixin):
 
     def fit(self, X: pd.DataFrame, y=None) -> versionTransformer:
         self.subversions_count = len(X[self.version_column][X[self.version_column].first_valid_index()].split('.'))
-        self.max_digits_count = X[self.version_column].str.split(".").map(lambda row: len(max(row, key=len))).max()
+        self.max_digits_count = X[self.version_column].map(lambda version: len(max(version.split("."), key=len))).max()
         return self
 
     def add_digits_from_list(version_list: List[str], add_digits: int) -> int:
