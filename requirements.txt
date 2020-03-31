@@ -1,7 +1,7 @@
 jupyter
 numpy
-pandas<=0.25
-pandas-profiling
+pandas
+pandas-profiling==2.5.0
 matplotlib
 scikit-learn
 seaborn
