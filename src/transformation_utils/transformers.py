@@ -13,7 +13,7 @@ class VersionToNum(BaseEstimator, TransformerMixin):
         return self
 
     def add_digits_from_list(version_list: List[str]) -> int:
-        return int(''.join([version.rjust(self.max_digits_count, '0') for version in version_list]))
+        return int(''.join([version.zfill(self.max_digits_count) for version in version_list]))
 
     def transform(self, X, y=None):
         return X[self.version_column].map(lambda version: self.add_digits_from_list(version.split('.'))
