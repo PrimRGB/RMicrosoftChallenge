@@ -1,9 +1,10 @@
 from sklearn.pipeline import make_union, make_pipeline
-from sklearn.preprocessing import FunctionTransformer, OneHotEncoder
+from sklearn.preprocessing import FunctionTransformer, OneHotEncoder, RobustScaler
 from sklearn.impute import SimpleImputer
-import numpy as nps
+import numpy as np
+from sklearn.svm import SVC
 
-from src.transformation_utils.select_column import SelectColumns
+from src.transformation_utils.select_columns import SelectColumns
 
 features = [
     "Census_MDC2FormFactor",
@@ -35,8 +36,9 @@ features = [
 
 target_column_name = "HasDetections"
 
+# TODO: MAD - Mean Absolute Deviation
 def get_pipeline():
-    make_pipeline(
+    pipeline = make_pipeline(
         SelectColumns(features),
         make_union(
             make_pipeline(
@@ -49,11 +51,15 @@ def get_pipeline():
                         SelectColumns(["Census_PrimaryDiskTotalCapacity",
                                    "Census_SystemVolumeTotalCapacity",
                                    "Census_TotalPhysicalRAM"
-                                    ])
+                                    ]),
+                        RobustScaler()
                     ),
                     SelectColumns(["Census_ProcessorCoreCount"]),
                 ),
-                SimpleImputer(missing_values=[np.nan, -1], startegy="median")
+                SimpleImputer(missing_values=np.nan, strategy="median"),
+                SimpleImputer(missing_values=-1, strategy="median")
             )
-        )
+        ),
+        SVC(C=1.0, kernel='rbf')
     )
+    return pipeline
