@@ -4,4 +4,4 @@ pandas<=0.25
 pandas-profiling
 matplotlib
 scikit-learn
-
+seaborn

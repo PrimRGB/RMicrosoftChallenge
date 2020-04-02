@@ -36,22 +36,23 @@ features = [
 
 target_column_name = "HasDetections"
 
+
 # TODO: MAD - Mean Absolute Deviation
-def get_pipeline():
+def get_data_preparation_pipeline():
     pipeline = make_pipeline(
         SelectColumns(features),
         make_union(
             make_pipeline(
-                SelectColumns(["Census_MDC2FormFactor"]),
+                SelectColumns(["Census_MDC2FormFactor", "Census_ActivationChannel"]),
                 OneHotEncoder()
             ),
             make_pipeline(
                 make_union(
                     make_pipeline(
                         SelectColumns(["Census_PrimaryDiskTotalCapacity",
-                                   "Census_SystemVolumeTotalCapacity",
-                                   "Census_TotalPhysicalRAM"
-                                    ]),
+                                       "Census_SystemVolumeTotalCapacity",
+                                       "Census_TotalPhysicalRAM"
+                                       ]),
                         RobustScaler()
                     ),
                     SelectColumns(["Census_ProcessorCoreCount"]),
@@ -59,7 +60,14 @@ def get_pipeline():
                 SimpleImputer(missing_values=np.nan, strategy="median"),
                 SimpleImputer(missing_values=-1, strategy="median")
             )
-        ),
+        )
+    )
+    return pipeline
+
+
+def get_pipeline():
+    pipeline = make_pipeline(
+        get_data_preperation_pipeline(),
         SVC(C=1.0, kernel='rbf')
     )
     return pipeline
