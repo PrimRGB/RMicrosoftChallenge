@@ -4,3 +4,6 @@ data/
 .idea/
 __pycache__/
 *.pyc
+*.odt#
+
+*.joblib
