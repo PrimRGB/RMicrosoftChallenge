@@ -24,10 +24,10 @@ features = [
     "Census_InternalPrimaryDiagonalDisplaySizeInInches",
     "Census_InternalPrimaryDisplayResolutionHorizontal",
     "Census_InternalPrimaryDisplayResolutionVertical",
-    "Census_GenuineStateName",
     "Census_ActivationChannel",
     "Census_FirmwareManufacturerIdentifier",
     "Census_FirmwareVersionIdentifier",
+    "Census_GenuineStateName",
     "Census_IsTouchEnabled",
     "Census_IsPenCapable",
     "Census_IsAlwaysOnAlwaysConnectedCapable",
@@ -52,13 +52,14 @@ def get_data_preparation_pipeline():
                         SelectColumns(["Census_PrimaryDiskTotalCapacity",
                                        "Census_SystemVolumeTotalCapacity",
                                        "Census_TotalPhysicalRAM"
-                                       ]),
-                        RobustScaler()
+                                       ])
                     ),
                     SelectColumns(["Census_ProcessorCoreCount"]),
                 ),
                 SimpleImputer(missing_values=np.nan, strategy="median"),
-                SimpleImputer(missing_values=-1, strategy="median")
+                SimpleImputer(missing_values=-1, strategy="median"),
+                FunctionTransformer(np.log2),
+                RobustScaler()
             )
         )
     )
@@ -67,7 +68,7 @@ def get_data_preparation_pipeline():
 
 def get_pipeline():
     pipeline = make_pipeline(
-        get_data_preperation_pipeline(),
+        get_data_preparation_pipeline(),
         SVC(C=1.0, kernel='rbf')
     )
     return pipeline
