@@ -16,7 +16,6 @@ def category_count_per_label_subplots(df: pd.DataFrame, category_feature_name: s
     :param wspace: Spacing parameter between each pair of subplots.
     :param ticks: Ticks for the bar plot.
     :param ticklabels: Ticks labels for the bar plot.
-    :return:
     '''
     labels = df[label_feature_name].unique()
     fig, axes = plt.subplots(nrows, ncols, figsize=figsize)
@@ -32,6 +31,11 @@ def category_count_per_label_subplots(df: pd.DataFrame, category_feature_name: s
         ax.grid(which='major', axis='x')
 
 def category_count_per_label_plot(df: pd.DataFrame, category_feature_name: str, label_feature_name: str):
+    '''
 
+    :param df: Pandas DataFrame containing both category_feature_name and label_feature_name.
+    :param category_feature_name: The feature to plot for each slice.
+    :param label_feature_name: The feature whose values slice our dataframe, creating different bars for each value.
+    '''
     category_label_cross = pd.crosstab(df[category_feature_name], df[label_feature_name])
     category_label_cross.plot(kind='barh')
