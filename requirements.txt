@@ -5,3 +5,4 @@ pandas-profiling
 matplotlib
 scikit-learn
 seaborn
+category_encoders
