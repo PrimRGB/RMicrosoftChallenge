@@ -5,4 +5,5 @@ pandas-profiling==2.5.0
 matplotlib
 scikit-learn
 seaborn
+category_encoders
 bokeh
